@@ -8,6 +8,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\AudioExtractor\AudioExtractor.csproj" />
     <ProjectReference Include="..\WhisperAI\WhisperAI.csproj" />
   </ItemGroup>
 
