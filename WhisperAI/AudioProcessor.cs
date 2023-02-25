@@ -5,7 +5,7 @@ namespace WhisperAI
 {
     public class AudioProcessor
     {
-        private List<OnSegmentEventArgs> segments = new();
+        private List<SegmentData> segments = new();
         public async Task ProcessAudio(string wavPath)
         {
             segments.Clear();
@@ -13,38 +13,45 @@ namespace WhisperAI
             if (!File.Exists(modelName))
             {
                 Console.WriteLine("Download Whisper AI model. This might take a while depending on your internet speed..");
-                using var modelStream = await WhisperGgmlDownloader.GetGgmlModelAsync(GgmlType.Base);
-                using var fileWriter = File.OpenWrite(modelName);
+                var modelStream = await WhisperGgmlDownloader.GetGgmlModelAsync(GgmlType.Base);
+                var fileWriter = File.OpenWrite(modelName);
                 await modelStream.CopyToAsync(fileWriter);
             }
+            
+            var whisperFactory = WhisperFactory.FromPath("ggml-base.bin");
 
-            var builder = WhisperProcessorBuilder.Create()
-                .WithFileModel(modelName)
+            var builder = whisperFactory.CreateBuilder()
                 .WithSegmentEventHandler(OnNewSegment)
                 .WithLanguage("en");
-            using var processor = builder.Build();
+            var processor = builder.Build();
 
-            void OnNewSegment(object sender, OnSegmentEventArgs e)
+            void OnNewSegment(SegmentData segmentData)
             {
-                Console.WriteLine($"CSSS {e.Start} ==> {e.End} : {e.Segment}");
-                segments.Add(e);
+                Console.WriteLine($"CSSS {segmentData.Start} ==> {segmentData.End} : {segmentData.Text}");
+                segments.Add(segmentData);
             }
 
-            await using var fileStream = File.OpenRead(wavPath);
-            Console.WriteLine("Processing audio file");
-            processor.Process(fileStream);
-            Console.WriteLine("Processed");
-            processor.Dispose();
+            //Read entire file from path, put in stream.
+
+            using (Stream fileStream = File.OpenRead(wavPath))
+            {
+                GC.KeepAlive(fileStream);
+                GC.KeepAlive(processor);
+                Console.WriteLine("Processing audio file");
+                processor.Process(fileStream);
+                Console.WriteLine("Processed");
+                processor.Dispose();
+            }
             //Sort segments by start time
             segments.Sort((x, y) => x.Start.CompareTo(y.Start));
             //Write segments to file as subtitles
-            using var writer = new StreamWriter("output.srt");
+            var writer = new StreamWriter("output.srt");
             for (var i = 0; i < segments.Count; i++)
             {
                 var segment = segments[i];
                 writer.WriteLine(i + 1);
                 writer.WriteLine($"{segment.Start} --> {segment.End}");
-                writer.WriteLine(segment.Segment);
+                writer.WriteLine(segment.Text);
                 writer.WriteLine();
             }
             

@@ -16,3 +16,4 @@ var extractor = new Extractor();
 
 var audioProcessor = new AudioProcessor();
 await audioProcessor.ProcessAudio("output.wav");
+Console.WriteLine("Finished audio processing");
