@@ -72,7 +72,7 @@ namespace WhisperAI
 
                 foreach (string part in parts)
                 {
-                    writer.WriteLine(part);
+                    writer.WriteLine(part.Trim());
                 }
 
                 writer.WriteLine();
