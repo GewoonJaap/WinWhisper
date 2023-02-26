@@ -44,16 +44,40 @@ namespace WhisperAI
             }
             //Sort segments by start time
             segments.Sort((x, y) => x.Start.CompareTo(y.Start));
+            //remove all segments that have same time + content
+            segments = segments.Distinct().ToList();
             //Write segments to file as subtitles
-            var writer = new StreamWriter("output.srt");
+        var writer = new StreamWriter("output.srt");
             for (var i = 0; i < segments.Count; i++)
             {
                 var segment = segments[i];
                 writer.WriteLine(i + 1);
                 writer.WriteLine($"{segment.Start} --> {segment.End}");
-                writer.WriteLine(segment.Text);
+                //break the text in max 42 characters, but split only on white space
+                var parts = new List<string>();
+                var index = 0;
+
+                while (index < segment.Text.Length)
+                {
+                    if (segment.Text.Length - index <= 42)
+                    {
+                        parts.Add(segment.Text[index..]);
+                        break;
+                    }
+
+                    var lastSpace = segment.Text.Substring(index, 42).LastIndexOf(' ');
+                    parts.Add(segment.Text.Substring(index, lastSpace));
+                    index += lastSpace + 1;
+                }
+
+                foreach (string part in parts)
+                {
+                    writer.WriteLine(part);
+                }
+
                 writer.WriteLine();
             }
+            writer.Close();
             
         }
     }
