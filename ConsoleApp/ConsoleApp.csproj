@@ -8,6 +8,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Sentry" Version="3.28.1" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\AudioExtractor\AudioExtractor.csproj" />
     <ProjectReference Include="..\Utility\Utility.csproj" />
     <ProjectReference Include="..\WhisperAI\WhisperAI.csproj" />

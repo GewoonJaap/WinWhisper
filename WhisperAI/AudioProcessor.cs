@@ -7,21 +7,23 @@ namespace WhisperAI
     public class AudioProcessor
     {
         private List<SegmentData> _segments = new();
-        private const GgmlType ModelType = GgmlType.Medium;
+        private const GgmlType ModelType = GgmlType.Base;
 
         public async Task ProcessAudio(string wavPath, string languageCode)
         {
             var modelName = ModelNameFetcher.GgmlTypeToString(ModelType);
+            var modelPath = FolderManager.Models + "/" + modelName;
             _segments.Clear();
-            if (!File.Exists(modelName))
+            if (!File.Exists(modelPath))
             {
                 Console.WriteLine($"Downloading Whisper AI model {modelName}. This might take a while depending on your internet speed..");
+                Console.WriteLine("The application might exit after downloading. Please restart the application manually in that case!");
                 var modelStream = await WhisperGgmlDownloader.GetGgmlModelAsync(ModelType);
-                var fileWriter = File.OpenWrite(modelName);
+                var fileWriter = File.OpenWrite(modelPath);
                 await modelStream.CopyToAsync(fileWriter);
             }
             
-            var whisperFactory = WhisperFactory.FromPath(modelName);
+            var whisperFactory = WhisperFactory.FromPath(modelPath);
 
             var builder = whisperFactory.CreateBuilder()
                 .WithSegmentEventHandler(OnNewSegment);
@@ -103,7 +105,7 @@ namespace WhisperAI
         private static string GetOutputFilePath(string wavPath)
         {
             var fileName = Path.GetFileNameWithoutExtension(wavPath);
-            return FolderManager.subtitlesFolder + "/" + fileName + ".srt";
+            return FolderManager.SubtitlesFolder + "/" + fileName + ".srt";
         }
     }
 }

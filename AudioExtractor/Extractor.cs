@@ -31,7 +31,7 @@ namespace AudioExtractor
         private static string GetOutputFolder(string videoFilePath)
         {
             var fileName = Path.GetFileNameWithoutExtension(videoFilePath);
-            return FolderManager.wavFolder + "/" + fileName + ".wav";
+            return FolderManager.WavFolder + "/" + fileName + ".wav";
         }
     }
 }
