@@ -1,35 +1,31 @@
 ﻿// See https://aka.ms/new-console-template for more information
 
 using AudioExtractor;
+using Utility;
 using WhisperAI;
 
 
 //create folder Subtitles if not exists
-var subtitlesFolder = "Subtitles";
-if (!Directory.Exists(subtitlesFolder))
-{
-    Directory.CreateDirectory(subtitlesFolder);
-}
-//create wav folder if not exists
-var wavFolder = "rawAudio";
-if (!Directory.Exists(wavFolder))
-{
-    Directory.CreateDirectory(wavFolder);
-}
+FolderManager.CreateFolder(FolderManager.subtitlesFolder);
+FolderManager.CreateFolder(FolderManager.wavFolder);
 
 Console.Clear();
 Console.WriteLine("Enter the video path...");
 var videoPath = Console.ReadLine() ?? string.Empty;
 //if path starts and ends with ", remove
-if (videoPath.StartsWith("\"") && videoPath.EndsWith("\""))
+videoPath = VideoPathFormatter.formatVideoPath(videoPath);
+
+Console.WriteLine("In which language code (en,nl etc) is the audio? Leave empty to auto detect");
+var languageCode = Console.ReadLine() ?? string.Empty;
+if (languageCode.Length > 2)
 {
-    videoPath = videoPath[1..^1];
+    languageCode = string.Empty;
 }
-var extractor = new Extractor();
-var audioPath= extractor.ExtractAudioFromVideoFile(videoPath);
+
+var audioPath= Extractor.ExtractAudioFromVideoFile(videoPath);
 
 var audioProcessor = new AudioProcessor();
-await audioProcessor.ProcessAudio(audioPath);
+await audioProcessor.ProcessAudio(audioPath, languageCode);
 //remove audioPath file
 File.Delete(audioPath);
 Console.WriteLine("Finished audio processing");
