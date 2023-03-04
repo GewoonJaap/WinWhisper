@@ -27,7 +27,9 @@ namespace WhisperAI
 
             void OnNewSegment(SegmentData segmentData)
             {
-                Console.WriteLine($"CSSS {segmentData.Start} ==> {segmentData.End} : {segmentData.Text}");
+                var startTime = segmentData.Start.ToString("hh\\:mm\\:ss\\,fff").Replace(".", ",");
+                var endTime = segmentData.End.ToString("hh\\:mm\\:ss\\,fff").Replace(".", ",");
+                Console.WriteLine($"CSSS {startTime} ==> {endTime} : {segmentData.Text}");
                 segments.Add(segmentData);
             }
 
@@ -47,12 +49,18 @@ namespace WhisperAI
             //remove all segments that have same time + content
             segments = segments.Distinct().ToList();
             //Write segments to file as subtitles
-        var writer = new StreamWriter("output.srt");
+            var fileName = Path.GetFileNameWithoutExtension(wavPath);
+            var outputFilePath = Path.Combine(Path.GetDirectoryName(wavPath) ?? "output", fileName + ".srt");
+            
+            var writer = new StreamWriter(outputFilePath);
             for (var i = 0; i < segments.Count; i++)
             {
                 var segment = segments[i];
                 writer.WriteLine(i + 1);
-                writer.WriteLine($"{segment.Start} --> {segment.End}");
+                //segment.Start is now in the following format: 00:00:03.0200000, but should be 00:00:03,020
+                var startTime = segment.Start.ToString("hh\\:mm\\:ss\\,fff").Replace(".", ",");
+                var endTime = segment.End.ToString("hh\\:mm\\:ss\\,fff").Replace(".", ",");
+                writer.WriteLine($"{startTime} --> {endTime}");
                 //break the text in max 42 characters, but split only on white space
                 var parts = new List<string>();
                 var index = 0;
@@ -79,6 +87,7 @@ namespace WhisperAI
             }
             writer.Close();
             
+            Console.WriteLine($"Subtitle written to {outputFilePath}");
         }
     }
 }

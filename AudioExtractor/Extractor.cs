@@ -5,7 +5,7 @@ namespace AudioExtractor
 {
     public class Extractor
     {
-        public void ExtractAudioFromVideoFile(string videoFilePath)
+        public string ExtractAudioFromVideoFile(string videoFilePath)
         {
             Console.WriteLine("Extracting audio from video file located at: " + videoFilePath);
             Console.WriteLine("This might take a while depending on the file size and drive speed...");
@@ -19,8 +19,13 @@ namespace AudioExtractor
             var outFormat = new WaveFormat(outRate, reader.WaveFormat.Channels);
             var resampler = new MediaFoundationResampler(reader, outFormat);
 
-            WaveFileWriter.CreateWaveFile("output.wav", resampler);
-            Console.WriteLine("Extracted audio from video, output.wav");
+            //get file name from videoFilePath, remove extension
+            var fileName = Path.GetFileNameWithoutExtension(videoFilePath);
+            var outputFilePath = Path.Combine(Path.GetDirectoryName(videoFilePath) ?? "output", fileName + ".wav");
+
+            WaveFileWriter.CreateWaveFile("outputFilePath", resampler);
+            Console.WriteLine("Extracted audio from video, " + outputFilePath);
+            return outputFilePath;
         }
     }
 }
