@@ -21,9 +21,9 @@ namespace AudioExtractor
 
             //get file name from videoFilePath, remove extension
             var fileName = Path.GetFileNameWithoutExtension(videoFilePath);
-            var outputFilePath = Path.Combine(Path.GetDirectoryName(videoFilePath) ?? "output", fileName + ".wav");
+            var outputFilePath = "rawAudio/" + fileName + ".wav";
 
-            WaveFileWriter.CreateWaveFile("outputFilePath", resampler);
+            WaveFileWriter.CreateWaveFile(outputFilePath, resampler);
             Console.WriteLine("Extracted audio from video, " + outputFilePath);
             return outputFilePath;
         }

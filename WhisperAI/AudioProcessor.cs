@@ -50,7 +50,7 @@ namespace WhisperAI
             segments = segments.Distinct().ToList();
             //Write segments to file as subtitles
             var fileName = Path.GetFileNameWithoutExtension(wavPath);
-            var outputFilePath = Path.Combine(Path.GetDirectoryName(wavPath) ?? "output", fileName + ".srt");
+            var outputFilePath = "Subtitles/" + fileName + ".srt";
             
             var writer = new StreamWriter(outputFilePath);
             for (var i = 0; i < segments.Count; i++)
