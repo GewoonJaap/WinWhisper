@@ -6,6 +6,10 @@ Whisper AI for Windows, built with C# and [Whisper.NET](https://github.com/sandr
 ## What is WinWhisper?
 WinWhisper is a Windows application that uses [Whisper.NET](https://github.com/sandrohanea/whisper.net) to provide a simple console interface for interacting with Whisper AI.
 
+### Showcase
+![WinWhisper showcase](https://user-images.githubusercontent.com/33700526/222954203-adb416b6-9fe3-490b-b33f-9051e9579031.gif)
+
+
 With WinWhisper you can easily generate subtitles for your videos. These subtitles will be exported in .SRT format, which is supported by most video players.
 
 ## How to use WinWhisper?
