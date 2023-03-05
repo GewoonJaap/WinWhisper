@@ -6,6 +6,14 @@ Whisper AI for Windows, built with C# and [Whisper.NET](https://github.com/sandr
 ## What is WinWhisper?
 WinWhisper is a Windows application that uses [Whisper.NET](https://github.com/sandrohanea/whisper.net) to provide a simple console interface for interacting with Whisper AI.
 
+### Supported Operating Systems
+- Windows 64-bit
+- Windows on ARM64 (Check out the [Windows 2023 Dev kit](https://learn.microsoft.com/en-us/windows/arm/dev-kit/))
+- Linux 64-bit (Not tested but should work, if not please create an issue)
+- Linux on ARM64 (Not tested but should work, if not please create an issue)
+- MacOS 64-bit (Not tested but should work, if not please create an issue)
+- MacOS on ARM64 (Not tested but should work, if not please create an issue)
+
 ### Showcase
 ![WinWhisper showcase](https://user-images.githubusercontent.com/33700526/222954203-adb416b6-9fe3-490b-b33f-9051e9579031.gif)
 
