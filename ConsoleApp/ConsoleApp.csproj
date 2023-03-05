@@ -6,7 +6,12 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
     <AssemblyName>WinWhisper</AssemblyName>
+    <ApplicationIcon>WhisperIcon.ico</ApplicationIcon>
   </PropertyGroup>
+
+  <ItemGroup>
+    <Content Include="WhisperIcon.ico" />
+  </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="Sentry" Version="3.28.1" />
