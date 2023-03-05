@@ -9,12 +9,7 @@ using WhisperAI;
 using (SentrySdk.Init(o =>
        {
            o.Dsn = "https://02ce93a1ef0d4a61b3e6e019e5909617@o252778.ingest.sentry.io/4504780017041408";
-           // When configuring for the first time, to see what the SDK is doing:
-           o.Debug = true;
-           // Set traces_sample_rate to 1.0 to capture 100% of transactions for performance monitoring.
-           // We recommend adjusting this value in production.
            o.TracesSampleRate = 1.0;
-           // Enable Global Mode if running in a client app
            o.IsGlobalModeEnabled = true;
        }))
 {

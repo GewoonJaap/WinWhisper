@@ -62,16 +62,20 @@ namespace WhisperAI
             //remove all segments that have same time + content
             _segments = _segments.Distinct().ToList();
             //Write segments to file as subtitles
-            var outputFilePath = GetOutputFilePath(wavPath);
+            var outputFilePath = GetOutputFilePath(wavPath, languageCode.Length == 0 ? "en" : languageCode);
             
             var writer = new StreamWriter(outputFilePath);
-            for (var i = 0; i < _segments.Count; i++)
+            var subtitleIndex = 0;
+            foreach (var segment in _segments)
             {
-                var segment = _segments[i];
-                writer.WriteLine(i + 1);
                 //segment.Start is now in the following format: 00:00:03.0200000, but should be 00:00:03,020
                 var startTime = TimestampConverter.ConvertTimestampToSrtFormat(segment.Start);
                 var endTime = TimestampConverter.ConvertTimestampToSrtFormat(segment.End);
+                if (startTime == endTime || segment.Text.Trim().Length == 0)
+                {
+                    continue;
+                }
+                writer.WriteLine(++subtitleIndex);
                 writer.WriteLine($"{startTime} --> {endTime}");
                 //break the text in max 42 characters, but split only on white space
                 var parts = new List<string>();
@@ -102,10 +106,10 @@ namespace WhisperAI
             Console.WriteLine($"Subtitle written to {outputFilePath}");
         }
 
-        private static string GetOutputFilePath(string wavPath)
+        private static string GetOutputFilePath(string wavPath, string languageCode)
         {
             var fileName = Path.GetFileNameWithoutExtension(wavPath);
-            return FolderManager.SubtitlesFolder + "/" + fileName + ".srt";
+            return FolderManager.SubtitlesFolder + "/" + fileName + "." + languageCode.ToUpper() + ".srt";
         }
     }
 }
