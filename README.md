@@ -22,12 +22,14 @@ With WinWhisper you can easily generate subtitles for your videos. These subtitl
 
 ## How to use WinWhisper?
 1. Download the latest release from the [Releases Page](https://github.com/GewoonJaap/WinWhisper/releases)
-2. Extract the zip file
-3. Run WinWhisper.exe
-4. Enter the path to your video file (Simply drag the video file into the console)
-5. Enter the languagecode (en, nl, de etc) of the video, or leave it blank for automatic language detection
-6. Wait for the subtitles to be generated. They will be saved in the `Subtitles` folder, located in the same folder as the executable.
-7. Enjoy your subtitles!
+2. Download the latest DotNet 7.0.X Runtime Installer from [here](https://dotnet.microsoft.com/en-us/download/dotnet/7.0).
+3. Run the installer.
+4. Extract the WinWhisper zip file
+5. Run WinWhisper.exe
+6. Enter the path to your video file (Simply drag the video file into the console)
+7. Enter the languagecode (en, nl, de etc) of the video, or leave it blank for automatic language detection
+8. Wait for the subtitles to be generated. They will be saved in the `Subtitles` folder, located in the same folder as the executable.
+9. Enjoy your subtitles!
 
 ## How to build WinWhisper?
 1. Clone this repository

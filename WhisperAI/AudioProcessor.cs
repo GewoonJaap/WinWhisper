@@ -21,6 +21,8 @@ namespace WhisperAI
                 var modelStream = await WhisperGgmlDownloader.GetGgmlModelAsync(ModelType);
                 var fileWriter = File.OpenWrite(modelPath);
                 await modelStream.CopyToAsync(fileWriter);
+                fileWriter.Close();
+                Console.WriteLine("Downloaded model");
             }
             
             var whisperFactory = WhisperFactory.FromPath(modelPath);
