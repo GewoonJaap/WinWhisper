@@ -112,7 +112,7 @@ namespace WhisperAI
         private static string GetOutputFilePath(string wavPath, string languageCode, string outputPath = "")
         {
             var fileName = Path.GetFileNameWithoutExtension(wavPath);
-            if(!Directory.Exists(outputPath){
+            if(!Directory.Exists(outputPath)){
                 outputPath = "";
             }
             else if(outputPath.Length > 0 && (outputPath.EndsWith("/") || outputPath.EndsWith("\\"))){
