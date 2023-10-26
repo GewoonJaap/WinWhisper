@@ -32,7 +32,7 @@ public static class VideoFinder
             var videos = FindVideosInFolder(inputPath);
             videos.ForEach(video =>
             {
-                videosToConvert.Add(GetVideoDetails(inputPath));
+                videosToConvert.Add(GetVideoDetails(video));
             });
         }
 
