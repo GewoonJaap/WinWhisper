@@ -25,6 +25,7 @@
     <ProjectReference Include="..\AudioExtractor\AudioExtractor.csproj" />
     <ProjectReference Include="..\Utility\Utility.csproj" />
     <ProjectReference Include="..\WhisperAI\WhisperAI.csproj" />
+    <ProjectReference Include="..\Data\Data.csproj" />
   </ItemGroup>
 
 </Project>

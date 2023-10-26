@@ -9,7 +9,7 @@ namespace WhisperAI
         private List<SegmentData> _segments = new();
         private const GgmlType ModelType = GgmlType.Base;
 
-        public async Task ProcessAudio(string wavPath, string languageCode)
+        public async Task ProcessAudio(string wavPath, string languageCode, string subtitleOutputPath)
         {
             var modelName = ModelNameFetcher.GgmlTypeToString(ModelType);
             var modelPath = FolderManager.Models + "/" + modelName;
@@ -64,7 +64,7 @@ namespace WhisperAI
             //remove all segments that have same time + content
             _segments = _segments.Distinct().ToList();
             //Write segments to file as subtitles
-            var outputFilePath = GetOutputFilePath(wavPath, languageCode.Length == 0 ? "en" : languageCode);
+            var outputFilePath = GetOutputFilePath(wavPath, languageCode.Length == 0 ? "en" : languageCode, subtitleOutputPath);
             
             var writer = new StreamWriter(outputFilePath);
             var subtitleIndex = 0;
@@ -109,10 +109,18 @@ namespace WhisperAI
             Console.WriteLine($"Subtitle written to {fullOutputPath}");
         }
 
-        private static string GetOutputFilePath(string wavPath, string languageCode)
+        private static string GetOutputFilePath(string wavPath, string languageCode, string outputPath = "")
         {
             var fileName = Path.GetFileNameWithoutExtension(wavPath);
-            return FolderManager.SubtitlesFolder + "/" + fileName + "." + languageCode.ToUpper() + ".srt";
+            if(!Directory.Exists(outputPath){
+                outputPath = "";
+            }
+            else if(outputPath.Length > 0 && (outputPath.EndsWith("/") || outputPath.EndsWith("\\"))){
+                outputPath = outputPath.Substring(0, outputPath.Length - 1);
+            }
+
+            var finalOutputPath = outputPath.Length == 0 ? FolderManager.SubtitlesFolder : outputPath;
+            return finalOutputPath + "/" + fileName + "." + languageCode.ToUpper() + ".srt";
         }
     }
 }
