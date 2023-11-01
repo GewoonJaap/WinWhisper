@@ -14,36 +14,53 @@ using (SentrySdk.Init(o =>
        }))
 {
 
-    try { 
+    try
+    {
 
-    //create folder Subtitles if not exists
-    FolderManager.CreateFolder(FolderManager.SubtitlesFolder);
-    FolderManager.CreateFolder(FolderManager.WavFolder);
-    FolderManager.CreateFolder(FolderManager.Models);
+        //create folder Subtitles if not exists
+        FolderManager.CreateFolder(FolderManager.SubtitlesFolder);
+        FolderManager.CreateFolder(FolderManager.WavFolder);
+        FolderManager.CreateFolder(FolderManager.Models);
 
         while (true)
         {
             Console.Clear();
             Console.WriteLine("Welcome to WinWhisper. Generate subtitles with ease using WhisperAI.");
-            Console.WriteLine("Enter the video path...");
-            var videoPath = Console.ReadLine() ?? string.Empty;
-            //if path starts and ends with ", remove
-            videoPath = VideoPathFormatter.formatVideoPath(videoPath);
 
-            Console.WriteLine("In which language code (en,nl etc) is the audio? Leave empty to auto detect");
-            var languageCode = Console.ReadLine() ?? string.Empty;
-            if (languageCode.Length > 2)
+            Console.WriteLine("Enter the path where you want the subtitles to be saved...");
+            Console.WriteLine("Leave empty to save the subtitles in the ./Subtitles folder");
+
+            var subtitleOutputPath = Console.ReadLine() ?? string.Empty;
+
+            Console.WriteLine("Enter the video path or the folder path that contains the videos you want to process...");
+            var inputPath = Console.ReadLine() ?? string.Empty;
+            //if path starts and ends with ", remove
+            inputPath = VideoPathFormatter.formatVideoPath(inputPath);
+
+            var videosToConvert = VideoFinder.FindVideosBasedOnPath(inputPath);
+
+            if(videosToConvert.Count == 0)
             {
-                languageCode = string.Empty;
+                Console.WriteLine("No videos found in this path. Please try again.");
+                Console.WriteLine("If you expect WinWhisper to find videos. Please open a bug report on our GitHub page: https://github.com/GewoonJaap/WinWhisper/issues/new?assignees=&labels=&projects=&template=bug_report.md&title=");
+                Console.WriteLine("Press any key to retry...");
+                Console.ReadKey();
+                continue;
             }
 
-            var audioPath = Extractor.ExtractAudioFromVideoFile(videoPath);
+            videosToConvert.ForEach(async videoToConvert =>
+            {
+                Console.WriteLine($"Processing video: {videoToConvert.VideoName}");
+                var audioPath = Extractor.ExtractAudioFromVideoFile(videoToConvert.VideoPath);
 
-            var audioProcessor = new AudioProcessor();
-            await audioProcessor.ProcessAudio(audioPath, languageCode);
-            //remove audioPath file
-            File.Delete(audioPath);
-            Console.WriteLine("Finished audio processing");
+                var audioProcessor = new AudioProcessor();
+                await audioProcessor.ProcessAudio(audioPath, videoToConvert.LanguageCode, subtitleOutputPath);
+                //remove audioPath file
+                File.Delete(audioPath);
+                Console.WriteLine($"Finished audio processing for video: {videoToConvert.VideoName}");
+
+            });
+
 
             Console.WriteLine("Do you want to process another video? (yes/no)");
             var processAnotherVideo = Console.ReadLine() ?? string.Empty;
@@ -54,7 +71,7 @@ using (SentrySdk.Init(o =>
         }
 
     }
-    catch(Exception ex)
+    catch (Exception ex)
     {
         SentrySdk.CaptureException(ex);
         Console.WriteLine("An error occured. Please report the following on our GitHub page: https://github.com/GewoonJaap/WinWhisper/issues/new?assignees=&labels=&projects=&template=bug_report.md&title=");

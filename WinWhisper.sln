@@ -11,6 +11,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AudioExtractor", "AudioExtr
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Utility", "Utility\Utility.csproj", "{91717B4C-184C-4AAF-A2D5-F1EF692290CC}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Data", "Data\Data.csproj", "{61D701DC-C745-4C0A-B52C-7C2A08A63958}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -51,6 +53,14 @@ Global
 		{91717B4C-184C-4AAF-A2D5-F1EF692290CC}.Release|Any CPU.Build.0 = Release|Any CPU
 		{91717B4C-184C-4AAF-A2D5-F1EF692290CC}.Release|ARM64.ActiveCfg = Release|ARM64
 		{91717B4C-184C-4AAF-A2D5-F1EF692290CC}.Release|ARM64.Build.0 = Release|ARM64
+		{61D701DC-C745-4C0A-B52C-7C2A08A63958}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{61D701DC-C745-4C0A-B52C-7C2A08A63958}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{61D701DC-C745-4C0A-B52C-7C2A08A63958}.Debug|ARM64.ActiveCfg = Debug|Any CPU
+		{61D701DC-C745-4C0A-B52C-7C2A08A63958}.Debug|ARM64.Build.0 = Debug|Any CPU
+		{61D701DC-C745-4C0A-B52C-7C2A08A63958}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{61D701DC-C745-4C0A-B52C-7C2A08A63958}.Release|Any CPU.Build.0 = Release|Any CPU
+		{61D701DC-C745-4C0A-B52C-7C2A08A63958}.Release|ARM64.ActiveCfg = Release|Any CPU
+		{61D701DC-C745-4C0A-B52C-7C2A08A63958}.Release|ARM64.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
