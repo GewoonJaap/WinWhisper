@@ -1,4 +1,5 @@
-![Header image](https://user-images.githubusercontent.com/33700526/222953487-2e7c4ec4-ce4e-4675-ae2f-ea5972aef669.png)
+![WinWhisper-Blue_Cover](https://github.com/GewoonJaap/WinWhisper/assets/33700526/dcd0d5e4-1d09-4697-95ec-15d12a712dd3)
+
 
 # WinWhisper
 Whisper AI for Windows, built with C# and [Whisper.NET](https://github.com/sandrohanea/whisper.net)
@@ -46,4 +47,5 @@ With WinWhisper you can easily generate subtitles for your videos. These subtitl
 4. Create a pull request
 
 
-![Logo](https://user-images.githubusercontent.com/33700526/222953513-d2122c07-4bac-4169-9ce1-16ffe74273c6.png)
+![WinWhisper-Blue_Footer0 5x](https://github.com/GewoonJaap/WinWhisper/assets/33700526/39db2529-f17d-476e-a67b-c7ddc86438f5)
+
