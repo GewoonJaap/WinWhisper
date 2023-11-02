@@ -106,7 +106,7 @@ namespace WhisperAI
             writer.Close();
 
             var fullOutputPath = Path.GetFullPath(outputFilePath);
-            Console.WriteLine($"Subtitle written to {fullOutputPath}");
+            Console.WriteLine($"Subtitle written to: {fullOutputPath}");
         }
 
         private static string GetOutputFilePath(string wavPath, string languageCode, string outputPath = "")
