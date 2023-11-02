@@ -13,7 +13,7 @@ jobs:
       - name: Submit package to Windows Package Manager Community Repository
         run: |
 
-          $packageId = "GewoonJaap.WinWhisper"
+          $packageId = "Jaap.WinWhisper"
           $gitToken = "${{ secrets.WINGET_PAT }}"
 
           # Fetching latest release from GitHub
