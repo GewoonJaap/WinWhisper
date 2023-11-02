@@ -17,8 +17,8 @@ jobs:
           $gitToken = "${{ secrets.WINGET_PAT }}"
 
           # Fetching latest release from GitHub
-          $github = Invoke-RestMethod -uri "https://api.github.com/repos/GewoonJaap/WinWhisper/releases"
-          $targetRelease = $github | Where-Object -Property name -match 'Dev Home'| Select-Object -First 1
+          $github = Invoke-RestMethod -uri "https://api.github.com/repos/GewoonJaap/WinWhisper/releases/latest"
+          $targetRelease = $github | Where-Object -Property name -match 'WinWhisper'| Select-Object -First 1
           $installerUrl = $targetRelease | Select-Object -ExpandProperty assets -First 1 | Where-Object -Property name -match 'WinWhisperSetup.exe' | Select-Object -ExpandProperty browser_download_url
           $packageVersion = $targetRelease.tag_name.Trim("v")
 
