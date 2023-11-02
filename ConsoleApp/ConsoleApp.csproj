@@ -6,15 +6,16 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
     <AssemblyName>WinWhisper</AssemblyName>
-    <ApplicationIcon>WhisperIcon.ico</ApplicationIcon>
+    <ApplicationIcon>WinWhisper-White_Icon.ico</ApplicationIcon>
     <Platforms>AnyCPU;ARM64</Platforms>
-    <Version>1.1</Version>
+    <Version>1.2</Version>
     <Description>WinWhisper is a Windows application that uses AI to detect and remove background noise from audio files.</Description>
     <Authors>Jaap</Authors>
+    <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
   </PropertyGroup>
 
   <ItemGroup>
-    <Content Include="WhisperIcon.ico" />
+    <Content Include="WinWhisper-White_Icon.ico" />
   </ItemGroup>
 
   <ItemGroup>
