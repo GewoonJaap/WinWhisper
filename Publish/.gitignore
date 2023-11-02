@@ -1,0 +1,7 @@
+# Ignore all in this directory except .gitignore
+*.dll
+*.exe
+*.pdb
+*.json
+*.zip
+runtimes/

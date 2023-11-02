@@ -3,6 +3,9 @@
 using AudioExtractor;
 using Data;
 using Sentry;
+using Squirrel;
+using System.Reflection;
+using System.Runtime.InteropServices;
 using Utility;
 using WhisperAI;
 
@@ -21,6 +24,11 @@ internal class Program
 
             try
             {
+                //only on windows
+                if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+                {
+                    RegisterSquirrel();
+                }
 
                 //create folder Subtitles if not exists
                 FolderManager.CreateFolder(FolderManager.SubtitlesFolder);
@@ -72,10 +80,20 @@ internal class Program
         }
 
     }
+
+    private static void RegisterSquirrel()
+    {
+        SquirrelAwareApp.HandleEvents(
+              onInitialInstall: OnAppInstall,
+              onAppUninstall: OnAppUninstall,
+              onEveryRun: OnAppRun);
+
+    }
+
     private static GatherVideoResult GatherVideosToConvert()
     {
         Console.Clear();
-        Console.WriteLine("Welcome to WinWhisper. Generate subtitles with ease using WhisperAI.");
+        Console.WriteLine($"Welcome to WinWhisper ({Assembly.GetExecutingAssembly().GetName().Version}). Generate subtitles with ease using WhisperAI.");
 
         Console.WriteLine("Enter the path where you want the subtitles to be saved...");
         Console.WriteLine("Leave empty to save the subtitles in the ./Subtitles folder");
@@ -91,5 +109,39 @@ internal class Program
 
         return new GatherVideoResult(videos, subtitleOutputPath);
 
+    }
+
+    private static void OnAppInstall(SemanticVersion version, IAppTools tools)
+    {
+        tools.CreateShortcutForThisExe(ShortcutLocation.StartMenu | ShortcutLocation.Desktop);
+    }
+
+    private static void OnAppUninstall(SemanticVersion version, IAppTools tools)
+    {
+        tools.RemoveShortcutForThisExe(ShortcutLocation.StartMenu | ShortcutLocation.Desktop);
+    }
+
+    private static async Task UpdateMyApp()
+    {
+        using var mgr = new UpdateManager("https://winwhisper.ams3.digitaloceanspaces.com");
+        var newVersion = await mgr.UpdateApp();
+
+        // optionally restart the app automatically, or ask the user if/when they want to restart
+        if (newVersion != null)
+        {
+            Console.WriteLine($"WinWhisper update {newVersion.Version} is available! Installing on exit.");
+            UpdateManager.RestartAppWhenExited();
+        }
+    }
+
+    private static void OnAppRun(SemanticVersion version, IAppTools tools, bool firstRun)
+    {
+        tools.SetProcessAppUserModelId();
+        // show a welcome message when the app is first installed
+        if (firstRun)
+        {
+            Console.WriteLine($"Thanks for installing WinWhisper version {Assembly.GetExecutingAssembly().GetName().Version}");
+        }
+        UpdateMyApp();
     }
 }

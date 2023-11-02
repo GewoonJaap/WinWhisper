@@ -12,6 +12,7 @@
     <Description>WinWhisper is a Windows application that uses AI to detect and remove background noise from audio files.</Description>
     <Authors>Jaap</Authors>
     <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
+    <ApplicationManifest>app.manifest</ApplicationManifest>
   </PropertyGroup>
 
   <ItemGroup>
@@ -19,6 +20,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="Clowd.Squirrel" Version="2.9.42" />
     <PackageReference Include="Sentry" Version="3.40.1" />
   </ItemGroup>
 
