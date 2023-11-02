@@ -47,6 +47,14 @@ With WinWhisper you can easily generate subtitles for your videos. These subtitl
 4. Create a pull request
 
 
+## How to generate a publishable release?
+1. Open the `publish.bat` file
+2. Enter the new version number
+3. Upload all files inside `Releases` to the storage bucket
+4. Create a new release on GitHub
+5. Upload the WinWhisperSetup.exe file to the release
+
+
 ## Thanks to
 - [@hirowa](https://github.com/hirowa) for creating the WinWhisper logo and banner ❤️
 
