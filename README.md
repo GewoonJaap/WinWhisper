@@ -47,5 +47,9 @@ With WinWhisper you can easily generate subtitles for your videos. These subtitl
 4. Create a pull request
 
 
+## Thanks to
+- [@hirowa](https://github.com/hirowa) for creating the WinWhisper logo and banner ❤️
+
+
 ![WinWhisper-Blue_Footer0 5x](https://github.com/GewoonJaap/WinWhisper/assets/33700526/39db2529-f17d-476e-a67b-c7ddc86438f5)
 
