@@ -12,7 +12,7 @@ using WhisperAI;
 
 internal class Program
 {
-    private static void Main(string[] args)
+    private static async Task Main(string[] args)
     {
         using (SentrySdk.Init(o =>
        {
@@ -49,7 +49,7 @@ internal class Program
                     }
 
 
-                    videosToConvert.Videos.ForEach(async video =>
+                    await videosToConvert.Videos.ForEachAsync(async video =>
                     {
                         Console.WriteLine($"Processing video: {video.VideoName}");
                         var audioPath = Extractor.ExtractAudioFromVideoFile(video.VideoPath);
@@ -83,10 +83,14 @@ internal class Program
 
     private static void RegisterSquirrel()
     {
+        if (File.Exists(".isStandalone"))
+        {
+            return;
+        }
         SquirrelAwareApp.HandleEvents(
-              onInitialInstall: OnAppInstall,
-              onAppUninstall: OnAppUninstall,
-              onEveryRun: OnAppRun);
+                  onInitialInstall: OnAppInstall,
+                  onAppUninstall: OnAppUninstall,
+                  onEveryRun: OnAppRun);
 
     }
 
@@ -142,6 +146,12 @@ internal class Program
         {
             Console.WriteLine($"Thanks for installing WinWhisper version {Assembly.GetExecutingAssembly().GetName().Version}");
         }
-        UpdateMyApp();
+        try
+        {
+            UpdateMyApp();
+        } catch(Exception ex)
+        {
+            SentrySdk.CaptureException(ex);
+        }
     }
 }

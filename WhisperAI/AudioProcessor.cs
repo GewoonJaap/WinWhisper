@@ -113,6 +113,10 @@ namespace WhisperAI
         {
             var fileName = Path.GetFileNameWithoutExtension(wavPath);
             if(!Directory.Exists(outputPath)){
+                if(outputPath.Length != 0)
+                {
+                    Console.WriteLine($"Output path ({outputPath}) does not exist, saving subtitles in default folder");
+                }
                 outputPath = "";
             }
             else if(outputPath.Length > 0 && (outputPath.EndsWith("/") || outputPath.EndsWith("\\"))){
