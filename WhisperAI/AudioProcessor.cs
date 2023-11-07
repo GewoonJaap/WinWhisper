@@ -9,7 +9,7 @@ namespace WhisperAI
         private List<SegmentData> _segments = new();
         private const GgmlType ModelType = GgmlType.Base;
 
-        public async Task ProcessAudio(string wavPath, string languageCode, string subtitleOutputPath)
+        public async Task ProcessAudio(string wavPath, string languageCode, string subtitleOutputPath, bool shouldTranslate)
         {
             var modelName = ModelNameFetcher.GgmlTypeToString(ModelType);
             var modelPath = FolderManager.Models + "/" + modelName;
@@ -24,21 +24,14 @@ namespace WhisperAI
                 fileWriter.Close();
                 Console.WriteLine("Downloaded model");
             }
-            
-            var whisperFactory = WhisperFactory.FromPath(modelPath);
 
-            var builder = whisperFactory.CreateBuilder()
-                .WithSegmentEventHandler(OnNewSegment);
+            var processor = SetupProcessor(modelPath, languageCode, shouldTranslate, OnNewSegment);
 
-            if (languageCode.Length > 0)
+            if(processor is null)
             {
-                builder.WithLanguage(languageCode);
+                Console.WriteLine("Something went wrong while setting up the processor. Please try again.");
+                return;
             }
-            else
-            {
-                builder.WithLanguageDetection();
-            }
-            var processor = builder.Build();
 
             void OnNewSegment(SegmentData segmentData)
             {
@@ -54,9 +47,13 @@ namespace WhisperAI
             {
                 GC.KeepAlive(fileStream);
                 GC.KeepAlive(processor);
+
                 Console.WriteLine("Processing audio file");
+
                 processor.Process(fileStream);
+
                 Console.WriteLine("Processed");
+
                 processor.Dispose();
             }
             //Sort segments by start time
@@ -64,7 +61,8 @@ namespace WhisperAI
             //remove all segments that have same time + content
             _segments = _segments.Distinct().ToList();
             //Write segments to file as subtitles
-            var outputFilePath = GetOutputFilePath(wavPath, languageCode.Length == 0 ? "en" : languageCode, subtitleOutputPath);
+            var outputLanguagecode = languageCode.Length == 0 || shouldTranslate ? "en" : languageCode;
+            var outputFilePath = GetOutputFilePath(wavPath, outputLanguagecode, subtitleOutputPath);
             
             var writer = new StreamWriter(outputFilePath);
             var subtitleIndex = 0;
@@ -125,6 +123,30 @@ namespace WhisperAI
 
             var finalOutputPath = outputPath.Length == 0 ? FolderManager.SubtitlesFolder : outputPath;
             return finalOutputPath + "/" + fileName + "." + languageCode.ToUpper() + ".srt";
+        }
+
+        private static WhisperProcessor? SetupProcessor(string modelPath, string languageCode, bool shouldTranslate, OnSegmentEventHandler OnNewSegment)
+        {
+            var whisperFactory = WhisperFactory.FromPath(modelPath);
+
+            var builder = whisperFactory.CreateBuilder()
+                .WithSegmentEventHandler(OnNewSegment);
+
+            if (languageCode.Length > 0)
+            {
+                builder.WithLanguage(languageCode);
+            }
+            else
+            {
+                builder.WithLanguageDetection();
+            }
+
+            if (shouldTranslate)
+            {
+                builder.WithTranslate();
+            }
+
+           return builder.Build();
         }
     }
 }
