@@ -55,7 +55,7 @@ internal class Program
                         var audioPath = Extractor.ExtractAudioFromVideoFile(video.VideoPath);
 
                         var audioProcessor = new AudioProcessor();
-                        await audioProcessor.ProcessAudio(audioPath, video.LanguageCode, videosToConvert.SubtitleOutputPath);
+                        await audioProcessor.ProcessAudio(audioPath, video.LanguageCode, videosToConvert.SubtitleOutputPath, video.ShouldTranslate);
                         //remove audioPath file
                         File.Delete(audioPath);
                         Console.WriteLine($"Finished audio processing for video: {video.VideoName}");
