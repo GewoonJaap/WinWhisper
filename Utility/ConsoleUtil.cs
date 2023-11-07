@@ -13,6 +13,13 @@ public static class ConsoleUtil
         return languageCode;
     }
 
+    public static bool AskIfNeedsToBeTranslated()
+    {
+        Console.WriteLine("Do you want to translate the subtitles to English? (yes/no) Default: no");
+        var translateSubtitles = Console.ReadLine() ?? string.Empty;
+        return translateSubtitles.ToLower() == "yes" || translateSubtitles.ToLower() == "y";
+    }
+
     public static void LogException(Exception ex)
     {
         Console.WriteLine("An error occured. Please report the following on our GitHub page: https://github.com/GewoonJaap/WinWhisper/issues/new?assignees=&labels=&projects=&template=bug_report.md&title=");

@@ -52,6 +52,7 @@ public static class VideoFinder
     {
         var videoName = Path.GetFileName(videoPath);
         var languageCode = ConsoleUtil.AskForLanguageCode(videoName);
-        return new VideoToConvertObject(videoPath, languageCode);
+        var shouldTranslate = ConsoleUtil.AskIfNeedsToBeTranslated();
+        return new VideoToConvertObject(videoPath, languageCode, shouldTranslate);
     }
 }
