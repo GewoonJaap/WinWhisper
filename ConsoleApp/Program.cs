@@ -103,11 +103,12 @@ internal class Program
         Console.WriteLine("Leave empty to save the subtitles in the ./Subtitles folder");
 
         var subtitleOutputPath = Console.ReadLine() ?? string.Empty;
+        subtitleOutputPath = PathUtil.FormatPath(subtitleOutputPath);
 
         Console.WriteLine("Enter the video path or the folder path that contains the videos you want to process...");
         var inputPath = Console.ReadLine() ?? string.Empty;
         //if path starts and ends with ", remove
-        inputPath = VideoPathFormatter.formatVideoPath(inputPath);
+        inputPath = PathUtil.FormatPath(inputPath);
 
         var videos = VideoFinder.FindVideosBasedOnPath(inputPath);
 
