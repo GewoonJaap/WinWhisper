@@ -10,8 +10,9 @@ public static class ModelNameFetcher
         {
             GgmlType.Base => "base",
             GgmlType.BaseEn => "base-en",
-            GgmlType.Large => "large",
-            GgmlType.LargeV1 => "lage-v1",
+            GgmlType.LargeV2 => "large-v2",
+            GgmlType.LargeV1 => "large-v1",
+            GgmlType.LargeV3 => "large-v3",
             GgmlType.Medium => "medium",
             GgmlType.MediumEn => "medium-en",
             GgmlType.Small => "small",
