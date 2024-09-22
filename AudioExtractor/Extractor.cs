@@ -1,5 +1,5 @@
-﻿using NAudio.Wave;
-using System.Reflection.PortableExecutable;
+﻿using System.IO.MemoryMappedFiles;
+using NAudio.Wave;
 using Utility;
 
 namespace AudioExtractor
@@ -11,12 +11,9 @@ namespace AudioExtractor
             Console.WriteLine("Extracting audio from video file located at: " + videoFilePath);
             Console.WriteLine("This might take a while depending on the file size and drive speed...");
             const int outRate = 16000;
-            var fileStream = File.OpenRead(videoFilePath);
-            //filestream to memorystream
-            var memoryStream = new MemoryStream();
-            fileStream.CopyTo(memoryStream);
-            fileStream.Close();
-            var reader = new StreamMediaFoundationReader(memoryStream);
+            using var mmf = MemoryMappedFile.CreateFromFile(videoFilePath, FileMode.Open);
+            
+            using var reader = new StreamMediaFoundationReader(mmf.CreateViewStream());
             var outFormat = new WaveFormat(outRate, reader.WaveFormat.Channels);
             var resampler = new MediaFoundationResampler(reader, outFormat);
 
