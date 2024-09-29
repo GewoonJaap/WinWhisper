@@ -105,7 +105,7 @@ internal class Program
         var subtitleOutputPath = Console.ReadLine() ?? string.Empty;
         subtitleOutputPath = PathUtil.FormatPath(subtitleOutputPath);
 
-        Console.WriteLine("Enter the video path or the folder path that contains the videos you want to process...");
+        Console.WriteLine("Enter the video/audio path or the folder path that contains the videos/audios you want to process...");
         var inputPath = Console.ReadLine() ?? string.Empty;
         //if path starts and ends with ", remove
         inputPath = PathUtil.FormatPath(inputPath);

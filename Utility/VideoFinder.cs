@@ -11,9 +11,10 @@ public static class VideoFinder
         var files = Directory.GetFiles(folderPath);
         foreach (var file in files)
         {
-            //check if file is video by metadata
-            var mimeType = MimeTypeMap.GetMimeType(Path.GetExtension(file));
-            if (mimeType.StartsWith("video"))
+            //check if file is video or audio by metadata
+            var mimeType = MimeTypeMap.GetMimeType(Path.GetExtension(file)).Split('/')[0].ToUpperInvariant();
+            
+            if (new[] { "VIDEO", "AUDIO" }.Contains(mimeType))
             {
                 videoPaths.Add(file);
             }
