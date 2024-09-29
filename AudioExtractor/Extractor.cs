@@ -1,6 +1,6 @@
 ﻿using System.IO.MemoryMappedFiles;
 using NAudio.Wave;
-using Utility;
+using Utility.FileSystem;
 
 namespace AudioExtractor
 {

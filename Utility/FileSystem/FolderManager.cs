@@ -1,11 +1,11 @@
-﻿namespace Utility
+﻿namespace Utility.FileSystem
 {
     public static class FolderManager
     {
 
-        public static string SubtitlesFolder = "Subtitles";
-        public static string WavFolder = "RawAudio";
-        public static string Models = "Models";
+        public const string SubtitlesFolder = "Subtitles";
+        public const string WavFolder = "RawAudio";
+        public const string Models = "Models";
         public static void CreateFolder(string folderPath)
         {
             if (!Directory.Exists(folderPath))

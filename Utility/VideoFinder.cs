@@ -5,6 +5,8 @@ using MimeTypes;
 
 public static class VideoFinder
 {
+    private static readonly string[] acceptedMimeTypes = ["VIDEO", "AUDIO"];
+
     private static List<string> FindVideosInFolder(string folderPath)
     {
         var videoPaths = new List<string>();
@@ -14,7 +16,7 @@ public static class VideoFinder
             //check if file is video or audio by metadata
             var mimeType = MimeTypeMap.GetMimeType(Path.GetExtension(file)).Split('/')[0].ToUpperInvariant();
             
-            if (new[] { "VIDEO", "AUDIO" }.Contains(mimeType))
+            if (acceptedMimeTypes.Contains(mimeType))
             {
                 videoPaths.Add(file);
             }
