@@ -21,7 +21,7 @@
 
   <ItemGroup>
     <PackageReference Include="Clowd.Squirrel" Version="2.11.1" />
-    <PackageReference Include="Sentry" Version="4.9.0" />
+    <PackageReference Include="Sentry" Version="4.11.0" />
   </ItemGroup>
 
   <ItemGroup>
