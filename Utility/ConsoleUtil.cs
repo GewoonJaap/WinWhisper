@@ -1,7 +1,11 @@
-﻿namespace Utility;
+﻿using Data.Enum;
+using Whisper.net.Ggml;
+
+namespace Utility;
 
 public static class ConsoleUtil
 {
+    private const string DEFAULT_MODEL_TYPE = "base";
     public static string AskForLanguageCode(string fileName)
     {
         Console.WriteLine($"In which language code (en,nl etc) is the audio for video: {fileName}? Leave empty to auto detect");
@@ -13,11 +17,31 @@ public static class ConsoleUtil
         return languageCode;
     }
 
+    public static WinWhisperModelType AskForModelType()
+    {
+        Console.WriteLine("Which model type do you want to use? (base, base-en, large-v2, large-v1, large-v3, medium, medium-en, small, small-en, tiny, tiny-en)");
+        Console.WriteLine($"Default: {DEFAULT_MODEL_TYPE}");
+        var modelType = Console.ReadLine() ?? DEFAULT_MODEL_TYPE;
+        if(modelType.Trim().Length == 0)
+        {
+            modelType = DEFAULT_MODEL_TYPE;
+        }
+        try
+        {
+            return ModelNameFetcher.StringToModelType(modelType.ToLower());
+        }
+        catch
+        {
+            Console.WriteLine($"Invalid model type. Defaulting to {DEFAULT_MODEL_TYPE} model.");
+            return ModelNameFetcher.StringToModelType(DEFAULT_MODEL_TYPE);
+        }
+    }
+
     public static bool AskIfNeedsToBeTranslated()
     {
         Console.WriteLine("Do you want to translate the subtitles to English? (yes/no) Default: no");
         var translateSubtitles = Console.ReadLine() ?? string.Empty;
-        return translateSubtitles.ToLower() == "yes" || translateSubtitles.ToLower() == "y";
+        return translateSubtitles.Equals("yes", StringComparison.CurrentCultureIgnoreCase) || translateSubtitles.Equals("y", StringComparison.CurrentCultureIgnoreCase);
     }
 
     public static void LogException(Exception ex)

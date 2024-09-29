@@ -1,6 +1,6 @@
 ﻿namespace Utility;
 
-using Data;
+using Data.Model;
 using MimeTypes;
 
 public static class VideoFinder

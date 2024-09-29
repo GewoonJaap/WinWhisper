@@ -1,7 +1,7 @@
 ﻿// See https://aka.ms/new-console-template for more information
 
 using AudioExtractor;
-using Data;
+using Data.Model;
 using Sentry;
 using Squirrel;
 using System.Reflection;
@@ -54,8 +54,8 @@ internal class Program
                         Console.WriteLine($"Processing video: {video.VideoName}");
                         var audioPath = Extractor.ExtractAudioFromVideoFile(video.VideoPath);
 
-                        var audioProcessor = new AudioProcessor();
-                        await audioProcessor.ProcessAudio(audioPath, video.LanguageCode, videosToConvert.SubtitleOutputPath, video.ShouldTranslate);
+                        var audioProcessor = new AudioProcessor(ModelNameFetcher.ModelTypeToGgmlType(videosToConvert.ModelType), videosToConvert.SubtitleOutputPath);
+                        await audioProcessor.ProcessAudio(audioPath, video.LanguageCode, video.ShouldTranslate);
                         //remove audioPath file
                         File.Delete(audioPath);
                         Console.WriteLine($"Finished audio processing for video: {video.VideoName}");
@@ -109,10 +109,10 @@ internal class Program
         var inputPath = Console.ReadLine() ?? string.Empty;
         //if path starts and ends with ", remove
         inputPath = PathUtil.FormatPath(inputPath);
-
+        var modelType = ConsoleUtil.AskForModelType();
         var videos = VideoFinder.FindVideosBasedOnPath(inputPath);
 
-        return new GatherVideoResult(videos, subtitleOutputPath);
+        return new GatherVideoResult(videos, subtitleOutputPath, modelType);
 
     }
 

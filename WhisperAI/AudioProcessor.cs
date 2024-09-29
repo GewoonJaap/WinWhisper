@@ -4,21 +4,23 @@ using Whisper.net.Ggml;
 
 namespace WhisperAI
 {
-    public class AudioProcessor
+    public class AudioProcessor(GgmlType modelType, string subtitleOutputPath)
     {
         private List<SegmentData> _segments = new();
-        private const GgmlType ModelType = GgmlType.Base;
 
-        public async Task ProcessAudio(string wavPath, string languageCode, string subtitleOutputPath, bool shouldTranslate)
+        public async Task ProcessAudio(string wavPath, string languageCode, bool shouldTranslate)
         {
-            var modelName = ModelNameFetcher.GgmlTypeToString(ModelType);
+            var modelName = ModelNameFetcher.GgmlTypeToString(modelType);
             var modelPath = FolderManager.Models + "/" + modelName;
             _segments.Clear();
+
+            LogStartProcessing(modelName, wavPath, languageCode, shouldTranslate);
+
             if (!File.Exists(modelPath))
             {
                 Console.WriteLine($"Downloading Whisper AI model {modelName}. This might take a while depending on your internet speed..");
                 Console.WriteLine("The application might exit after downloading. Please restart the application manually in that case!");
-                var modelStream = await WhisperGgmlDownloader.GetGgmlModelAsync(ModelType);
+                var modelStream = await WhisperGgmlDownloader.GetGgmlModelAsync(modelType);
                 var fileWriter = File.OpenWrite(modelPath);
                 await modelStream.CopyToAsync(fileWriter);
                 fileWriter.Close();
@@ -105,6 +107,14 @@ namespace WhisperAI
 
             var fullOutputPath = Path.GetFullPath(outputFilePath);
             Console.WriteLine($"Subtitle written to: {fullOutputPath}");
+        }
+
+        private static void LogStartProcessing(string modelName, string wavPath, string languageCode, bool shouldTranslate)
+        {
+            Console.WriteLine($"Processing WAV file: {wavPath}");
+            Console.WriteLine($"Using model: {modelName}");
+            Console.WriteLine($"With language: {languageCode}");
+            Console.WriteLine($"{(shouldTranslate ? "Translating video" : "Not translating video")}");
         }
 
         private static string GetOutputFilePath(string wavPath, string languageCode, string outputPath = "")
