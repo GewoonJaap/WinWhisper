@@ -23,7 +23,7 @@ With WinWhisper you can easily generate subtitles for your videos. These subtitl
 
 ## How to use WinWhisper?
 1. Download the latest release from the [Releases Page](https://github.com/GewoonJaap/WinWhisper/releases)
-2. Download the latest DotNet 7.0.X Runtime Installer from [here](https://dotnet.microsoft.com/en-us/download/dotnet/7.0).
+2. Download the latest DotNet 8.0.X Runtime Installer from [here](https://dotnet.microsoft.com/en-us/download/dotnet/8.0).
 ![afbeelding](https://github.com/GewoonJaap/WinWhisper/assets/33700526/10d9684f-ba22-4d70-b43c-f8f56029e045)
 
 3. Run the installer.
