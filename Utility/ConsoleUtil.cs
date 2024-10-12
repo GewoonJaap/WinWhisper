@@ -5,7 +5,7 @@ namespace Utility;
 
 public static class ConsoleUtil
 {
-    private const string DEFAULT_MODEL_TYPE = "base";
+    private const string DEFAULT_MODEL_TYPE = "large-v3-turbo";
     public static string AskForLanguageCode(string fileName)
     {
         Console.WriteLine($"In which language code (en,nl etc) is the audio for video: {fileName}? Leave empty to auto detect");
@@ -19,7 +19,9 @@ public static class ConsoleUtil
 
     public static WinWhisperModelType AskForModelType()
     {
-        Console.WriteLine("Which model type do you want to use? (base, base-en, large-v2, large-v1, large-v3, medium, medium-en, small, small-en, tiny, tiny-en)");
+        var modelTypes = ModelNameFetcher.GetModelTypes();
+        var modelTypesText = string.Join(", ", modelTypes);
+        Console.WriteLine($"Which model type do you want to use? ({modelTypesText})");
         Console.WriteLine($"Default: {DEFAULT_MODEL_TYPE}");
         var modelType = Console.ReadLine() ?? DEFAULT_MODEL_TYPE;
         if(modelType.Trim().Length == 0)
@@ -28,7 +30,7 @@ public static class ConsoleUtil
         }
         try
         {
-            return ModelNameFetcher.StringToModelType(modelType.ToLower());
+            return ModelNameFetcher.StringToModelType(modelType);
         }
         catch
         {

@@ -18,6 +18,7 @@ namespace Data.Enum
         Small,
         SmallEn,
         Tiny,
-        TinyEn
+        TinyEn,
+        LargeV3Turbo
     }
 }

@@ -21,6 +21,7 @@ public static class ModelNameFetcher
             GgmlType.SmallEn => "small-en",
             GgmlType.Tiny => "tiny",
             GgmlType.TinyEn => "tiny-en",
+            GgmlType.LargeV3Turbo => "large-v3-turbo",
             _ => throw new WinWhisperModelNotFoundException(modelType.ToString())
         };
 
@@ -29,7 +30,11 @@ public static class ModelNameFetcher
 
     public static WinWhisperModelType StringToModelType(string modelType)
     {
-        return modelType switch
+        if (Enum.TryParse<WinWhisperModelType>(modelType, true, out var result))
+        {
+            return result;
+        }
+        return modelType.ToLower() switch
         {
             "base" => WinWhisperModelType.Base,
             "base-en" => WinWhisperModelType.BaseEn,
@@ -42,6 +47,7 @@ public static class ModelNameFetcher
             "small-en" => WinWhisperModelType.SmallEn,
             "tiny" => WinWhisperModelType.Tiny,
             "tiny-en" => WinWhisperModelType.TinyEn,
+            "large-v3-turbo" => WinWhisperModelType.LargeV3Turbo,
             _ => throw new WinWhisperModelNotFoundException(modelType)
         };
     }
@@ -61,7 +67,13 @@ public static class ModelNameFetcher
             WinWhisperModelType.SmallEn => GgmlType.SmallEn,
             WinWhisperModelType.Tiny => GgmlType.Tiny,
             WinWhisperModelType.TinyEn => GgmlType.TinyEn,
+            WinWhisperModelType.LargeV3Turbo => GgmlType.LargeV3Turbo,
             _ => throw new WinWhisperModelNotFoundException(modelType.ToString())
         };
+    }
+
+    public static List<string> GetModelTypes()
+    {
+        return Enum.GetValues(typeof(WinWhisperModelType)).Cast<WinWhisperModelType>().Select(x => x.ToString()).ToList();
     }
 }

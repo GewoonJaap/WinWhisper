@@ -110,6 +110,7 @@ internal class Program
         //if path starts and ends with ", remove
         inputPath = PathUtil.FormatPath(inputPath);
         var modelType = ConsoleUtil.AskForModelType();
+        Console.WriteLine($"Selected model: {modelType}");
         var videos = VideoFinder.FindVideosBasedOnPath(inputPath);
 
         return new GatherVideoResult(videos, subtitleOutputPath, modelType);
