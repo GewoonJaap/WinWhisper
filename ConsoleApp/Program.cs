@@ -2,11 +2,11 @@
 
 using AudioExtractor;
 using Data.Model;
-using Squirrel;
 using System.Reflection;
 using System.Runtime.InteropServices;
 using Utility;
 using Utility.FileSystem;
+using Velopack;
 using WhisperAI;
 
 
@@ -87,10 +87,9 @@ internal class Program
         {
             return;
         }
-        SquirrelAwareApp.HandleEvents(
-                  onInitialInstall: OnAppInstall,
-                  onAppUninstall: OnAppUninstall,
-                  onEveryRun: OnAppRun);
+        VelopackApp.Build()
+            .WithFirstRun(v => Console.WriteLine($"Thanks for installing WinWhisper version {Assembly.GetExecutingAssembly().GetName().Version}"))
+            .Run();
 
     }
 
@@ -117,43 +116,20 @@ internal class Program
 
     }
 
-    private static void OnAppInstall(SemanticVersion version, IAppTools tools)
-    {
-        tools.CreateShortcutForThisExe(ShortcutLocation.StartMenu | ShortcutLocation.Desktop);
-    }
-
-    private static void OnAppUninstall(SemanticVersion version, IAppTools tools)
-    {
-        tools.RemoveShortcutForThisExe(ShortcutLocation.StartMenu | ShortcutLocation.Desktop);
-    }
-
     private static async Task UpdateMyApp()
     {
-        using var mgr = new UpdateManager("https://winwhisper.ams3.digitaloceanspaces.com");
-        var newVersion = await mgr.UpdateApp();
+        var mgr = new UpdateManager("https://winwhisper.ams3.digitaloceanspaces.com");
+        var newVersion = await mgr.CheckForUpdatesAsync();
+        if (newVersion == null)
+        {
+            return;
+        }
 
-        // optionally restart the app automatically, or ask the user if/when they want to restart
         if (newVersion != null)
         {
-            Console.WriteLine($"WinWhisper update {newVersion.Version} is available! Installing on exit.");
-            UpdateManager.RestartAppWhenExited();
-        }
-    }
-
-    private static void OnAppRun(SemanticVersion version, IAppTools tools, bool firstRun)
-    {
-        tools.SetProcessAppUserModelId();
-        // show a welcome message when the app is first installed
-        if (firstRun)
-        {
-            Console.WriteLine($"Thanks for installing WinWhisper version {Assembly.GetExecutingAssembly().GetName().Version}");
-        }
-        try
-        {
-            UpdateMyApp();
-        } catch(Exception ex)
-        {
-            SentrySdk.CaptureException(ex);
+            await mgr.DownloadUpdatesAsync(newVersion);
+            Console.WriteLine($"WinWhisper update {newVersion.TargetFullRelease.Version} is available! Installing on exit.");
+            mgr.ApplyUpdatesAndRestart(newVersion);
         }
     }
 }
