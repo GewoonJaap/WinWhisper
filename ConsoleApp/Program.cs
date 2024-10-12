@@ -90,6 +90,7 @@ internal class Program
         VelopackApp.Build()
             .WithFirstRun(v => Console.WriteLine($"Thanks for installing WinWhisper version {Assembly.GetExecutingAssembly().GetName().Version}"))
             .Run();
+        UpdateMyApp();
 
     }
 
@@ -118,18 +119,31 @@ internal class Program
 
     private static async Task UpdateMyApp()
     {
-        var mgr = new UpdateManager("https://winwhisper.ams3.digitaloceanspaces.com");
-        var newVersion = await mgr.CheckForUpdatesAsync();
-        if (newVersion == null)
+        try
         {
-            return;
-        }
+            var mgr = new UpdateManager("https://winwhisper.ams3.digitaloceanspaces.com");
 
-        if (newVersion != null)
+            if(mgr.IsInstalled == false)
+            {
+                return;
+            }
+
+            var newVersion = await mgr.CheckForUpdatesAsync();
+            if (newVersion == null)
+            {
+                return;
+            }
+
+            if (newVersion != null)
+            {
+                await mgr.DownloadUpdatesAsync(newVersion);
+                Console.WriteLine($"WinWhisper update {newVersion.TargetFullRelease.Version} is available! Installing on exit.");
+                mgr.ApplyUpdatesAndRestart(newVersion);
+            }
+        }
+        catch (Exception ex)
         {
-            await mgr.DownloadUpdatesAsync(newVersion);
-            Console.WriteLine($"WinWhisper update {newVersion.TargetFullRelease.Version} is available! Installing on exit.");
-            mgr.ApplyUpdatesAndRestart(newVersion);
+            SentrySdk.CaptureException(ex);
         }
     }
 }
