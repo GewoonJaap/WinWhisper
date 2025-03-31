@@ -9,7 +9,7 @@
 
   <ItemGroup>
     <PackageReference Include="Whisper.net" Version="1.7.0" />
-    <PackageReference Include="Whisper.net.Runtime" Version="1.7.0" />
+    <PackageReference Include="Whisper.net.Runtime" Version="1.8.1" />
     <PackageReference Include="MimeTypeMapOfficial" Version="1.0.17" />
   </ItemGroup>
 
