@@ -20,8 +20,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Sentry" Version="5.3.0" />
-    <PackageReference Include="Velopack" Version="0.0.626" />
+    <PackageReference Include="Sentry" Version="5.11.1" />
+    <PackageReference Include="Velopack" Version="0.0.1298" />
   </ItemGroup>
 
   <ItemGroup>
